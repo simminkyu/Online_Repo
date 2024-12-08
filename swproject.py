@@ -3,7 +3,6 @@ from tkinter import colorchooser, filedialog, simpledialog # 색상 선택, 파�
 from tkinter import font # 폰트 관련 기능
 from PIL import Image, ImageDraw, ImageTk # PIL (Pillow): 이미지 처리 및 캔버스에 표시할 수 있는 형식으로 변환
 
-
 class DrawingApp:
     def __init__(self, root):
         self.root = root
@@ -48,7 +47,10 @@ class DrawingApp:
             ("전체 지우기", self.clear_canvas), # 전체 지우기 버튼
             ("저장", self.save_image), # 저장 버튼
         ]
+<<<<<<< HEAD
         # 버튼 생성 후 수평으로 배치
+=======
+>>>>>>> 961ebd2db19be563bac8f557fbe4add619eb41c9
         for i, (text, command) in enumerate(buttons):
             tk.Button(self.menu_frame, text=text, command=command).grid(row=0, column=i)
 
@@ -110,6 +112,7 @@ class DrawingApp:
 
     def on_drag(self, event):
         # 마우스를 드래그할 때 그리기 작업 수행
+<<<<<<< HEAD
         if self.shape == "pen": # 펜 모드에서만 그리기 작업을 수행
             pen_width = self.stroke # 현재 펜 굵기 설정
             if self.pen_type in ["기본", "두껍게"]: # 기본 또는 두껍게 펜 타입일 때
@@ -118,6 +121,16 @@ class DrawingApp:
                 self.draw.line([self.last_x, self.last_y, event.x, event.y], fill=self.pen_color, width=1) # 가는 선 그리기
             elif self.pen_type == "점선": # 점선 펜 타입일 때
                 self.draw_dotted_line(self.last_x, self.last_y, event.x, event.y) # 점선 그리기
+=======
+        if self.shape == "pen":
+            pen_width = self.stroke
+            if self.pen_type in ["기본", "두껍게"]:
+                self.draw.line([self.last_x, self.last_y, event.x, event.y], fill=self.pen_color, width=pen_width)
+            elif self.pen_type == "가늘게":
+                self.draw.line([self.last_x, self.last_y, event.x, event.y], fill=self.pen_color, width=1)
+            elif self.pen_type == "점선":
+                self.draw_dotted_line(self.last_x, self.last_y, event.x, event.y)
+>>>>>>> 961ebd2db19be563bac8f557fbe4add619eb41c9
 
             self.update_canvas_image()
             self.last_x, self.last_y = event.x, event.y
@@ -131,12 +144,21 @@ class DrawingApp:
         # 점선 그리기 (두 점 사이를 점선으로 연결)
         step = 10  # 점선 간격 설정
         distance = ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5  # 두 점 사이의 거리 계산
+<<<<<<< HEAD
         for i in range(0, int(distance / step)): # 점선 간격에 맞게 반복
             start_x = x1 + (i * step) * (x2 - x1) / distance # 점선 시작점 X 좌표
             start_y = y1 + (i * step) * (y2 - y1) / distance # 점선 시작점 Y 좌표
             end_x = x1 + ((i + 1) * step) * (x2 - x1) / distance # 점선 끝점 X 좌표
             end_y = y1 + ((i + 1) * step) * (y2 - y1) / distance # 점선 끝점 Y 좌표
             self.draw.line([(start_x, start_y), (end_x, end_y)], fill=self.pen_color, width=self.stroke) # 점선 그리기
+=======
+        for i in range(0, int(distance / step)):
+            start_x = x1 + (i * step) * (x2 - x1) / distance
+            start_y = y1 + (i * step) * (y2 - y1) / distance
+            end_x = x1 + ((i + 1) * step) * (x2 - x1) / distance
+            end_y = y1 + ((i + 1) * step) * (y2 - y1) / distance
+            self.draw.line([(start_x, start_y), (end_x, end_y)], fill=self.pen_color, width=self.stroke)
+>>>>>>> 961ebd2db19be563bac8f557fbe4add619eb41c9
 
     def update_canvas_image(self):
         # 이미지 객체를 캔버스에 업데이트
@@ -145,6 +167,7 @@ class DrawingApp:
 
     def add_text(self):
         # 사용자가 입력한 텍스트를 캔버스에 추가
+<<<<<<< HEAD
         text = simpledialog.askstring("텍스트 입력", "추가할 텍스트 입력:") # 텍스트 입력 받기
         if text:
             x = simpledialog.askinteger("X 좌표", "텍스트의 X 좌표 입력 (0~500):") # X 좌표 입력 받기
@@ -163,6 +186,26 @@ class DrawingApp:
         file_path = filedialog.asksaveasfilename(defaultextension=".png") # 지정할 파일 경로 받기
         if file_path: # 파일 경로가 유효하면
             self.image.save(file_path) # 이미지 파일로 저장
+=======
+        text = simpledialog.askstring("텍스트 입력", "추가할 텍스트 입력:")
+        if text:
+            x = simpledialog.askinteger("X 좌표", "텍스트의 X 좌표 입력 (0~500):")
+            y = simpledialog.askinteger("Y 좌표", "텍스트의 Y 좌표 입력 (0~700):")
+            font_size = self.font_size_scale.get()
+            self.canvas.create_text(x, y, text=text, fill=self.text_color, font=("Arial", font_size))
+
+    def clear_canvas(self):
+        # 캔버스를 초기화 (흰색 배경으로 설정)
+        self.image = Image.new("RGBA", (500, 700), "white")
+        self.draw = ImageDraw.Draw(self.image)
+        self.update_canvas_image()
+
+    def save_image(self):
+        # 이미지를 파일로 저장
+        file_path = filedialog.asksaveasfilename(defaultextension=".png")
+        if file_path:
+            self.image.save(file_path)
+>>>>>>> 961ebd2db19be563bac8f557fbe4add619eb41c9
 
 
 if __name__ == "__main__":
