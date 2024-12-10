@@ -1,0 +1,38 @@
+/* 기본 스타일 */
+body {
+    font-family: Arial, sans-serif;
+}
+
+.toolbar {
+    margin-bottom: 10px;
+}
+
+button {
+    margin: 5px;
+    padding: 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#canvas {
+    border: 1px solid black;
+    background-color: white;
+}
+
+/* 텍스트 입력 모달 스타일 */
+#textInputModal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid black;
+    z-index: 10;
+}
+
+#textInputModal input {
+    padding: 5px;
+    font-size: 16px;
+    margin-right: 10px;
+}
